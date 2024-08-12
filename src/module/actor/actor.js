@@ -2397,6 +2397,45 @@ export class ActorArchmage extends Actor {
     return actor;
   }
 
+  async mobify(numMooks) {
+    if (this.type !== 'npc' || this.system.details?.role?.value?.toLowerCase?.() !== 'mook' || numMooks <= 1) return
+
+    const baseHp = this.system.attributes.hp.max
+    const name = game.i18n.format('ARCHMAGE.MOOKMOB.actorName', {name: this.name, count: numMooks})
+
+    // Compute actor-level overrides
+    const overrideData = {
+      name,
+      'system.attributes.hp.max': baseHp * numMooks,
+      'system.attributes.hp.value': baseHp * numMooks,
+    }
+
+    // Perform the clone
+    let actor = undefined
+    if (!this.parent && !this.pack) {
+      actor = await this.clone(overrideData, {save: true, keepId: false});
+    } else {
+      actor = await Actor.create(mergeObject(this.toObject(false), overrideData));
+    }
+
+    // Update attacks
+    for (const item of actor.items.filter(x => x.type === 'action')) {
+      const attack = item.system.attack.value
+      await item.update({'system.attack.value': `${attack} ([[ceil(@hp.value/${baseHp})]] attacks)`})
+    }
+
+    // Update the prototype token
+    if (actor.prototypeToken) {
+      actor.prototypeToken.update({
+        name,
+        width: actor.prototypeToken.width + 1,
+        height: actor.prototypeToken.height + 1,
+      })
+    }
+
+    actor.sheet.render(true)
+  }
+
   /**
    * Helper method to determine if a character actor is multiclassed
    *

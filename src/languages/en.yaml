@@ -189,7 +189,7 @@ ARCHMAGE:
     automateHPConditionsName: Auto-manage Dead and Staggered
     ColorblindHint: Change the colors of the power cards to a more accessibile color palette.
     ColorblindName: Enable Colorblind Accessibility Mode
-    ColorblindIssuesMessage: We're always trying to improve our accessibility. Suggest accessibility improvements at <a href="https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/issues/new" target="_blank">our issue tracker</a> and include the <strong>a11y</strong> label. 
+    ColorblindIssuesMessage: We're always trying to improve our accessibility. Suggest accessibility improvements at <a href="https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/issues/new" target="_blank">our issue tracker</a> and include the <strong>a11y</strong> label.
     ColorblindOptioncolorBlindBY: Tritanopia (Blue/Yellow)
     ColorblindOptioncolorBlindRG: Protanopla / Deutanopla (Red/Green)
     ColorblindOptionDefault: Default Colors
@@ -233,9 +233,17 @@ ARCHMAGE:
     enableOngoingEffectsMessagesName: Enable ongoing effects messages
     enableOngoingEffectsMessagesHint: Enable chat messages for ongoing effects on actors at the start and end of their turns.
   AUTOLEVEL:
+    title: Adjust Level
     confirm: Confirm (create duplicate)
     help: Use this form to create a copy of this actor with its stats (including attacks) adjusted to the new level.
     newLevel: New Level
+  MOOKMOB:
+    title: Convert to Mob
+    description: Clones this actor and adjusts it to represent a mob of mooks. Hp is multiplied, all attacks become multiattacks based on remaining hit points, and the token is made larger.
+    label: Number of mooks
+    button: Convert to Mob
+    actorName: '{name} (mob of {count})'
+    disabledButtonTooltip: This is only available on an unlocked mook with no multiattacks.
   # Characters
   CHARACTER:
     showPortrait: 'Show Portrait'

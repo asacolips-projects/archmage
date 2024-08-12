@@ -39,6 +39,7 @@
           <!-- Modify Level tab -->
           <Tab group="primary" :tab="tabs.primary.modifyLevel">
             <NpcModifyLevel :actor="actor" />
+            <NpcConvertToMob :actor="actor" :context="this.context" v-if="isMook" />
           </Tab>
           <!-- Settings tab -->
           <Tab group="primary" :tab="tabs.primary.settings">
@@ -80,6 +81,7 @@ import NpcActions from '@/components/actor/npc/NpcActions.vue';
 import NpcAttributes from '@/components/actor/npc/NpcAttributes.vue';
 import NpcSettings from '@/components/actor/npc/NpcSettings.vue';
 import NpcModifyLevel from '@/components/actor/npc/NpcModifyLevel.vue';
+import NpcConvertToMob from './components/actor/npc/NpcConvertToMob.vue';
 import Tabs from '@/components/parts/Tabs.vue';
 import Tab from '@/components/parts/Tab.vue';
 
@@ -94,6 +96,7 @@ export default {
     NpcAttributes,
     NpcSettings,
     NpcModifyLevel,
+    NpcConvertToMob,
     CharDetails,
     CharEffects,
   },
@@ -182,6 +185,9 @@ export default {
         }
       }
       return foundry.utils.mergeObject(baseFlags, flags);
+    },
+    isMook() {
+      return this.actor.system.details?.role?.value?.toLowerCase?.() === 'mook'
     }
   },
   watch: {},
