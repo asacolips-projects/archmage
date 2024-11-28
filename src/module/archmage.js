@@ -21,6 +21,7 @@ import { registerModuleArt } from './setup/register-module-art.js';
 import { TokenArchmage } from './actor/token.js';
 import {combatRound, combatTurn, preDeleteCombat} from "./hooks/combat.mjs";
 import { ArchmageCompendiumBrowserApplication } from './applications/compendium-browser.js';
+import { MookDamageApplicationV2 } from './applications/mook-damage.js';
 
 Hooks.once('init', async function() {
 
@@ -119,6 +120,7 @@ Hooks.once('init', async function() {
     rollItemMacro,
     ActorHelpersV2,
     ArchmageCompendiumBrowserApplication,
+    MookDamageApplicationV2,
     isSocketGM: () => game.users.activeGM.id === game.user.id,
     system: {
       moduleArt: {

@@ -116,7 +116,13 @@ export default function VueRenderingMixin(BaseApplication) {
         this.vueApp.config.globalProperties.foundry = foundry;
 
         // Expose the document.
-        this.vueApp.provide('itemDocument', this.document);
+        if (this.document) {
+          this.vueApp.provide('itemDocument', this.document);
+        }
+
+        if (this.documents) {
+          this.vueApp.provide('documents', this.documents);
+        }
 
         // Mount and store the vue application.
         this.vueRoot = this.vueApp.mount(target);
@@ -147,6 +153,7 @@ export default function VueRenderingMixin(BaseApplication) {
         // Update the application root with new values.
         this.vueRoot.updateContext(context);
         // Return doesn't matter, Vue handles updates.
+        console.log('renderHTML', context);
         return;
       }
 

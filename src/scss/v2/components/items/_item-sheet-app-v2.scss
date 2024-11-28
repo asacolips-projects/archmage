@@ -1,3 +1,88 @@
+.mook-damage-application {
+  .window-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dialog-content {
+    margin-bottom: 1rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .form-footer {
+    flex: 0 0 auto;
+  }
+
+  ul.mooks-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .mook-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mook-header {
+    font-weight: bold;
+    border-bottom: 2px solid;
+  }
+
+  .mook-footer {
+    font-weight: bold;
+    border-top: 2px solid;
+  }
+
+  .mook-img {
+    flex: 0 0 50px;
+  }
+
+  .mook-name {
+    flex: 1;
+  }
+
+  .mook-hp,
+  .mook-damage,
+  .mook-spill {
+    text-align: center;
+    flex: 0 0 70px;
+
+    &.high {
+      color: $c-fail;
+    }
+
+    &.low {
+      color: $c-blue;
+    }
+  }
+
+  .mooks-list,
+  .mook-footer {
+    .mook-hp,
+    .mook-damage input,
+    .mook-damage span,
+    .mook-spill {
+      font-size: 18px;
+    }
+  }
+
+  .mooks-total {
+    font-size: 24px;
+    margin: 8px 0;
+  }
+
+  .total-damage {
+    flex: 0 0 auto;
+  }
+}
+
 .archmage-appv2 {
   max-height: 90vh;
 
