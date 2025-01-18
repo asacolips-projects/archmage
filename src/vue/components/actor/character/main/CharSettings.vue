@@ -150,15 +150,41 @@
           <strong class="unit-subtitle">{{localize(concat('ARCHMAGE.CHARACTER.RESOURCES.', r))}}</strong>
         </div>
       </div>
+
+      <div class="flexcol unit unit--hooks" style="grid-column-end: span 6">
+        <h3>
+          {{localize('ARCHMAGE.SETTINGS.lifecycleHooks.title')}}
+          <InfoBubble :tooltip="localize('ARCHMAGE.SETTINGS.lifecycleHooks.hint')"/>
+        </h3>
+        <div class="flexrow form-group stacked">
+          <div class="flexcol field">
+            <label style="flex-grow: 0;">{{localize('ARCHMAGE.SETTINGS.lifecycleHooks.startOfTurn')}}</label>
+            <CodemirrorWrapper class="attribute-value"
+              name="system.lifecycleHooks.startOfTurn"
+              :value="actor.system.lifecycleHooks.startOfTurn"
+              :disable-paste-parsing="true" />
+          </div>
+          <div class="flexcol field">
+            <label style="flex-grow: 0;">{{localize('ARCHMAGE.SETTINGS.lifecycleHooks.endOfTurn')}}</label>
+            <CodemirrorWrapper class="attribute-value"
+              name="system.lifecycleHooks.endOfTurn"
+              :value="actor.system.lifecycleHooks.endOfTurn"
+              :disable-paste-parsing="true" />
+          </div>
+        </div>
+      </div>
     </section>
   </section>
 </template>
 
 <script>
 import { concat, localize } from '@/methods/Helpers';
+import { CodemirrorWrapper, InfoBubble } from '@/components';
+
 export default {
   name: 'CharSettings',
   props: ['actor', 'owner', 'tab'],
+  components: { CodemirrorWrapper, InfoBubble },
   setup() {
     return {
       concat,

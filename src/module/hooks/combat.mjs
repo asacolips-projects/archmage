@@ -1,12 +1,25 @@
+export async function combatStart(updateData) {
+    // Ensure the start-of-turn hook fires for the first combatant, combatTurn doesn't fire here
+    const firstCombatant = updateData.turns[0];
+    if (firstCombatant) {
+        await executeLifecycleMacro(firstCombatant, "startOfTurn");
+    }
+}
+
 export async function combatTurn(combat, context, options) {
+    const endCombatant = combat.combatant;
+    const startCombatant = combat.nextCombatant;
+
+    // Execute start/end of turn macros
+    await executeLifecycleMacro(endCombatant, "endOfTurn");
+    await executeLifecycleMacro(startCombatant, "startOfTurn");
+
     // Exit early if the feature is disabled.
     if (!game.settings.get('archmage', 'enableOngoingEffectsMessages')) return;
 
     // If the direction is negative, ignore the turn
     if (options.direction < 0) return;
 
-    const endCombatant = combat.combatant;
-    const startCombatant = combat.nextCombatant;
     await handleTurnEffects("End", combat, endCombatant, context, options);
     await handleTurnEffects("Start", combat, startCombatant, context, options);
     if (CONFIG.ARCHMAGE.is2e) {
@@ -269,4 +282,37 @@ async function renderOngoingEffectsCard(title, combatant, effectData) {
         content: html
     };
     ChatMessage.create(chatData, {});
+}
+
+async function executeLifecycleMacro(combatant, hookName) {
+    // If this isn't the actor's player, emit a socket request for that player to execute the hook
+    if (game.user?.character?.id !== combatant.actor.id) {
+        return game.socket.emit('system.archmage', {
+            type: 'actorLifecycleHook',
+            actorId: combatant.actor.id,
+            hookName
+        });
+    }
+
+    const speaker = ChatMessage.implementation.getSpeaker();
+    const actor = game.user.character;
+    const macroData = {
+        // TODO: ???
+    };
+
+    const hookBody = combatant?.actor?.system?.lifecycleHooks?.[hookName]?.trim();
+    if (!hookBody) return;
+
+    // Can't run if you can't run
+    if (!game.user.hasPermission("MACRO_SCRIPT")) return;
+
+    // Run our own function to bypass macro parameters limitations - based on Foundry's _executeScript
+    const AsyncFunction = async function () {}.constructor;
+    try {
+        const fn = new AsyncFunction("speaker", "actor", "archmage", hookBody);
+        await fn.call(this, speaker, actor, macroData);
+    } catch (ex) {
+        ui.notifications.error(game.i18n.localize('ARCHMAGE.UI.errMacroSyntax'));
+        console.error(`Lifecycle hook '${combatant.actor.name}' / ${hookName} failed with: ${ex}`, ex);
+    }
 }
