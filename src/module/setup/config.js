@@ -1170,8 +1170,8 @@ FLAGS.characterFlags = {
     type: Boolean
   },
   "toughness": {
-    name: "Toughness",
-    hint: "General feat to increase your max HP based on your base HP.",
+    name: "Toughness - UNUSED",
+    hint: "NO LONGER USED, will be removed. Use the Extra hp field instead.",
     section: "Feats",
     type: Boolean
   },

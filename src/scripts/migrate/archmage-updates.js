@@ -163,6 +163,11 @@ class ArchmageUpdateHandler {
       updateData = this.__migrateNPCSplitSizeStrength(actor, updateData);
     }
 
+    // Append NC migration for version 1.31.0
+    if (this.versionBelow('1.31.0')) {
+      updateData = this.__migratePCToughnessFlag(actor, updateData);
+    }
+
     // Future updates will go here.
 
     // Return the final update object.
@@ -385,12 +390,40 @@ class ArchmageUpdateHandler {
   /* -------------------------------------------*/
 
   /**
+   * 1.3X.0: Update PC to remove Toughness flag
+   *
+   * @param {object} actor Actor document to update.
+   * @param {object} updateData Update data object to merge changes into.
+   * @returns
+   *   Update object.
+   */
+
+  __migratePCToughnessFlag(actor, updateData={}) {
+    if (!actor || actor.type != "character" || !actor.getFlag("archmage", "toughness")) return updateData;
+    let mul = 1;
+    const actorData = actor.system;
+    const level = actorData.attributes.level.value;
+    if (game.settings.get("archmage", "secondEdition")) {
+      if (level >= 5) mul = 2;
+      if (level >= 8) mul = 4;
+    } else {
+      if (level <= 4) mul = 1 / 2;
+      else if (level >= 8) mul = 2;
+    }
+    const bonus = Math.floor(actorData.attributes.hp.base * mul);
+    actor.unsetFlag("archmage", "toughness");
+    return foundry.utils.mergeObject(updateData, {'system.attributes.hp.extra': bonus});
+  }
+
+  /* -------------------------------------------*/
+
+  /**
    * Main entrypoint to execute migrations.
    */
   async executeMigration() {
     // Exit early if the version matches.
     // @todo Update this for each new version that requires a migration.
-    if (!this.versionBelow('1.30.0')) {
+    if (!this.versionBelow('1.31.0')) {
       return;
     }
 
@@ -421,6 +454,10 @@ class ArchmageUpdateHandler {
 
     if (this.versionBelow('1.30.0')) {
       ui.notifications.info(game.i18n.localize('ARCHMAGE.MIGRATIONS.1_30_0'), {permanent: true});
+    }
+
+    if (this.versionBelow('1.31.0')) {
+      ui.notifications.info(game.i18n.localize('ARCHMAGE.MIGRATIONS.1_31_0'), {permanent: true});
     }
 
     // 1. Update world actors.

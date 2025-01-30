@@ -42,6 +42,7 @@ Actor:
           temp: 0
           tempmax: 0
           base: 7
+          extra: 0
           automatic: true
         init:
           type: Number

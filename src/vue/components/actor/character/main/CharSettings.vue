@@ -37,6 +37,10 @@
           <input type="checkbox" name="system.attributes.recoveries.automatic" v-model="actor.system.attributes.recoveries.automatic"/>
         </div>
         <div class="sub-unit sub-unit--initiative-adjustment flexrow">
+          <strong class="unit-subtitle">{{localize('ARCHMAGE.hpAdjustment')}}</strong>
+          <input type="number" name="system.attributes.hp.extra" v-model="actor.system.attributes.hp.extra" :disabled="overrides.includes('system.attributes.hp.extra')" placeholder="0"/>
+        </div>
+        <div class="sub-unit sub-unit--initiative-adjustment flexrow">
           <strong class="unit-subtitle">{{localize('ARCHMAGE.initAdjustment')}}</strong>
           <input type="number" name="system.attributes.init.value" v-model="actor.system.attributes.init.value" :disabled="overrides.includes('system.attributes.init.value')" placeholder="0"/>
         </div>

@@ -78,6 +78,7 @@ ARCHMAGE:
   health: Health
   hit: Hit
   hitPoints: Hit Points
+  hpAdjustment: Hit Points Adjustment
   icon: Icon
   iconRelationships: Icon Relationships
   import: Import Powers
@@ -876,6 +877,7 @@ ARCHMAGE:
     '1_25_0': "13th Age 1.25.0: Updating Powers cost field to new resources syntax."
     '1_26_0': "13th Age 1.26.0: Updating Powers feat structure."
     '1_30_0': "13th Age 1.30.0: Updating NPC actors to separate Size and Strength."
+    '1_31_0': "13th Age 1.31.0: Updating PC actors to remove Toughness flag."
   TOOLTIP:
     portrait: Portrait image.<br>Click to edit (may need permissions).
     pcAbility: |
